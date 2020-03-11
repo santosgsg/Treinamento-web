@@ -38,7 +38,7 @@ public class EnderecoServico implements IGenericService<Endereco, Long> {
 
 	@Override
 	public Optional<List<Endereco>> getList() {
-		return Optional.empty();
+		return dao.getList();
 	}
 
 	@Override

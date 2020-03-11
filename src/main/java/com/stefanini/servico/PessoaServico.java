@@ -47,14 +47,16 @@ public class PessoaServico implements Serializable {
 	 * Atualizar o dados de uma pessoa
 	 */
 //	@Override
-	public Pessoa atualizar(@Valid Pessoa entity) {
-		return dao.atualizar(entity);
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public Pessoa atualizar(@Valid Pessoa pessoa) {
+		return dao.atualizar(pessoa);
 	}
 
 	/**
 	 * Remover uma pessoa pelo id
 	 */
 //	@Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public void remover(@Valid Long id) {
 		dao.remover(id);
 	}

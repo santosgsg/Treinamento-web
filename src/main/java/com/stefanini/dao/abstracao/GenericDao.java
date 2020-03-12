@@ -80,6 +80,14 @@ public abstract class GenericDao<T, I extends Serializable> implements IGenericS
 	public Optional<T> encontrar(I id) {
 		return Optional.ofNullable(getEntityManager().find(classe, id));
 	}
+
+	public Optional<List<T>> obterListaPessoaPorUf(String uf){
+		String query = "SELECT p.co_seq_pessoa, p.no_nome, p.ds_email, p.dt_nascimento, p.st_pessoa ";
+		query += "FROM public.tb_pessoa p, public.tb_endereco e ";
+		query += "WHERE e.co_seq_pessoa = p.co_seq_pessoa and e.co_uf = '" + uf + "';";
+
+		return Optional.of(getEntityManager().createQuery(query).getResultList());
+	}
 	
 	
 

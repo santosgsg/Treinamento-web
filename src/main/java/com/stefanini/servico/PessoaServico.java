@@ -57,8 +57,9 @@ public class PessoaServico implements Serializable {
 	 */
 //	@Override
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public void remover(@Valid Long id) {
+	public String remover(@Valid Long id) {
 		dao.remover(id);
+		return "Removido!";
 	}
 
 	/**
@@ -77,9 +78,8 @@ public class PessoaServico implements Serializable {
 		return dao.encontrar(id);
 	}
 
-	public Optional<List<Pessoa>> findPessoasByUf(String uf) {
-//		dao.
-		return null;
+	public Optional<List<Pessoa>> obterListaPessoaPorUf(String uf) {
+		return dao.obterListaPessoaPorUf(uf);
 	}
 
 }

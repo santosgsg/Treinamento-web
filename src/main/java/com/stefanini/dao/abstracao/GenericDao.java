@@ -10,6 +10,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.validation.Valid;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -82,11 +83,17 @@ public abstract class GenericDao<T, I extends Serializable> implements IGenericS
 	}
 
 	public Optional<List<T>> obterListaPessoaPorUf(String uf){
-		String query = "SELECT p.co_seq_pessoa, p.no_nome, p.ds_email, p.dt_nascimento, p.st_pessoa ";
-		query += "FROM public.tb_pessoa p, public.tb_endereco e ";
-		query += "WHERE e.co_seq_pessoa = p.co_seq_pessoa and e.co_uf = '" + uf + "';";
-
-		return Optional.of(getEntityManager().createQuery(query).getResultList());
+		StringBuilder sqlQuery = new StringBuilder();
+		sqlQuery.append("SELECT p.co_seq_pessoa, p.no_nome, p.ds_email, p.dt_nascimento, p.st_pessoa ");
+		sqlQuery.append("FROM public.tb_pessoa p inner join tb_endereco e on e.co_seq_pessoa = p.co_seq_pessoa ");
+		sqlQuery.append("WHERE e.co_uf = '" + uf + "';");
+		List retorno = new ArrayList();
+		try {
+			retorno = getEntityManager().createNativeQuery(sqlQuery.toString()).getResultList();
+		} catch (Exception ex) {
+			System.out.println(ex.toString());
+		}
+		return Optional.of(retorno);
 	}
 	
 	

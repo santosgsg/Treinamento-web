@@ -81,7 +81,7 @@ public class PessoaResource {
 	public Response obterListaPessoaPorUf(@PathParam("uf") String uf) {
 		try {
 			Optional<List<Pessoa>> result =  pessoaServico.obterListaPessoaPorUf(uf);
-			return Response.ok(result).build();
+			return Response.ok(result.get()).build();
 		}
 		catch (Exception ex){
 			return Response.status(Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();

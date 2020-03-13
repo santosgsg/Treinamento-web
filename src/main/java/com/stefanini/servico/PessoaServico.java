@@ -39,7 +39,7 @@ public class PessoaServico implements Serializable {
 	 * Salvar os dados de uma Pessoa
 	 */
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-	public Pessoa salvar(@Valid Pessoa pessoa) {
+	public Pessoa salvar(@Valid Pessoa pessoa) throws Exception {
 		return dao.salvar(pessoa);
 	}
 

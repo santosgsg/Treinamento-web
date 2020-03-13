@@ -44,8 +44,13 @@ public abstract class GenericDao<T, I extends Serializable> implements IGenericS
 	 * @valid serve para validar a entidade antes de entrar no metodo, olhar o conceito de BEAN VALIDATION
 	 * Sempre que for executar uma DML é necessario abrir uma transacao e fecha-la, pois senão a operacao não será comitada
 	 */
-	public T salvar(@Valid T entity) {
-		entityManager.persist(entity);
+	public T salvar(@Valid T entity) throws Exception {
+		try {
+			entityManager.persist(entity);
+		} catch(Exception ex){
+			System.out.println(ex.getMessage());
+			throw new Exception(ex.getMessage());
+		}
 		return entity;
 	}
 	/**
@@ -80,20 +85,6 @@ public abstract class GenericDao<T, I extends Serializable> implements IGenericS
 	 */
 	public Optional<T> encontrar(I id) {
 		return Optional.ofNullable(getEntityManager().find(classe, id));
-	}
-
-	public Optional<List<T>> obterListaPessoaPorUf(String uf){
-		StringBuilder sqlQuery = new StringBuilder();
-		sqlQuery.append("SELECT p.co_seq_pessoa, p.no_nome, p.ds_email, p.dt_nascimento, p.st_pessoa ");
-		sqlQuery.append("FROM public.tb_pessoa p inner join tb_endereco e on e.co_seq_pessoa = p.co_seq_pessoa ");
-		sqlQuery.append("WHERE e.co_uf = '" + uf + "';");
-		List retorno = new ArrayList();
-		try {
-			retorno = getEntityManager().createNativeQuery(sqlQuery.toString()).getResultList();
-		} catch (Exception ex) {
-			System.out.println(ex.toString());
-		}
-		return Optional.of(retorno);
 	}
 	
 	

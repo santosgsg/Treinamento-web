@@ -25,7 +25,7 @@ public class EnderecoResource {
     }
 
     @POST
-    public Response salvarEndereco(@Valid Endereco endereco) {
+    public Response salvarEndereco(@Valid Endereco endereco) throws Exception {
         return Response.ok(enderecoServico.salvar(endereco)).build();
     }
 

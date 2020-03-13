@@ -12,7 +12,7 @@ public interface IGenericService<T, I extends Serializable> {
 	 * @param entity
 	 * @return
 	 */
-	T salvar(@Valid T entity);
+	T salvar(@Valid T entity) throws Exception;
 
 	/**
 	 * Atualizar uma entidade

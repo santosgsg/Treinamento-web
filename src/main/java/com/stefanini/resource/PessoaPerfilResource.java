@@ -24,7 +24,7 @@ public class PessoaPerfilResource {
     }
 
     @POST
-    public Response salvarPerfil(@Valid PessoaPerfil perfil) {
+    public Response salvarPerfil(@Valid PessoaPerfil perfil) throws Exception {
         return Response.ok(pessoaPerfilServico.salvar(perfil)).build();
     }
 

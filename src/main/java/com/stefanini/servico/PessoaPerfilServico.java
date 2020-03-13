@@ -18,7 +18,7 @@ public class PessoaPerfilServico implements IGenericService<PessoaPerfil, Long> 
 
 
     @Override
-    public PessoaPerfil salvar(@Valid PessoaPerfil entity) {
+    public PessoaPerfil salvar(@Valid PessoaPerfil entity) throws Exception {
         return dao.salvar(entity);
     }
 

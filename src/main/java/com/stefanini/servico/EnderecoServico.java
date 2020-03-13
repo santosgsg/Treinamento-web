@@ -32,7 +32,7 @@ public class EnderecoServico implements Serializable {
 
 //	@Override
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-	public Endereco salvar(@Valid Endereco entity) {
+	public Endereco salvar(@Valid Endereco entity) throws Exception {
 		return dao.salvar(entity);
 	}
 

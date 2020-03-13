@@ -29,6 +29,11 @@ public class EnderecoResource {
         return Response.ok(enderecoServico.salvar(endereco)).build();
     }
 
+    @PUT
+    public Response atualizarEndereco(@Valid Endereco endereco) throws Exception {
+        return Response.ok(enderecoServico.atualizar(endereco)).build();
+    }
+
 
     @GET
     @Path("{id}")

@@ -1,9 +1,8 @@
 package com.stefanini.resource;
 
 import com.stefanini.model.Endereco;
-import com.stefanini.model.Pessoa;
+
 import com.stefanini.servico.EnderecoServico;
-import com.stefanini.servico.PessoaServico;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -32,6 +31,11 @@ public class EnderecoResource {
     @PUT
     public Response atualizarEndereco(@Valid Endereco endereco) throws Exception {
         return Response.ok(enderecoServico.atualizar(endereco)).build();
+    }
+
+    @DELETE
+    public Response deleteEndereco(@Valid Endereco endereco) throws Exception {
+        return Response.ok(enderecoServico.remover(endereco.getId())).build();
     }
 
 

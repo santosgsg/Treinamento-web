@@ -31,7 +31,6 @@ public class Perfil implements Serializable {
      *
      */
     @Column(name = "dt_hora_inclusao")
-    @NotNull
     private LocalDateTime dataHoraInclusao;
     /**
      *
@@ -52,8 +51,6 @@ public class Perfil implements Serializable {
     public Perfil(@NotNull String nome, @NotNull String descricao, @NotNull LocalDateTime dataHoraInclusao, LocalDateTime dataHoraAlteracao) {
         this.nome = nome;
         this.descricao = descricao;
-        this.dataHoraInclusao = dataHoraInclusao;
-        this.dataHoraAlteracao = dataHoraAlteracao;
 //        this.pessoas = pessoas;
     }
 

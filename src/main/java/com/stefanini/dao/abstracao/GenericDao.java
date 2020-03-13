@@ -46,7 +46,7 @@ public abstract class GenericDao<T, I extends Serializable> implements IGenericS
 	 */
 	public T salvar(@Valid T entity) throws Exception {
 		try {
-			entityManager.persist(entity);
+			getEntityManager().persist(entity);
 		} catch(Exception ex){
 			System.out.println(ex.getMessage());
 			throw new Exception(ex.getMessage());
@@ -58,7 +58,7 @@ public abstract class GenericDao<T, I extends Serializable> implements IGenericS
 	 * Sempre que for executar uma DML é necessario abrir uma transacao e fecha-la, pois senão a operacao não será comitada
 	 */
 	public T atualizar(@Valid T entity) {
-		entityManager.merge(entity);
+		getEntityManager().merge(entity);
 		return entity;
 	}
 

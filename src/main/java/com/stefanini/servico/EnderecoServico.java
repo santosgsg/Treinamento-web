@@ -44,8 +44,9 @@ public class EnderecoServico implements Serializable {
 
 //	@Override
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public void remover(Long id) {
+	public String remover(Long id) {
 	dao.remover(id);
+		return "Removido com sucesso!";
 	}
 
 //	@Override

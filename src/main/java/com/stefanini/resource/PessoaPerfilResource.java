@@ -1,6 +1,7 @@
 package com.stefanini.resource;
 
 
+import com.stefanini.model.Perfil;
 import com.stefanini.model.PessoaPerfil;
 import com.stefanini.servico.PessoaPerfilServico;
 
@@ -10,7 +11,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-@Path("perfis")
+@Path("pessoaPerfil")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class PessoaPerfilResource {
@@ -34,5 +35,15 @@ public class PessoaPerfilResource {
     public Response obterPerfil(@PathParam("id") Long id) {
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("deu ruim").build();
 //		return Response.ok(pessoaServico.encontrar(id).get()).build();
+    }
+
+    @DELETE
+    public Response removerPessoaPerfil(PessoaPerfil pessoaPerfil) {
+        try {
+            return Response.ok(pessoaPerfilServico.remover(pessoaPerfil.getId())).build();
+        }
+        catch(Exception ex){
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Erro Inesperado").build();
+        }
     }
 }

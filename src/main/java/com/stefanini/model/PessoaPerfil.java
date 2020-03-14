@@ -7,8 +7,8 @@ import java.io.Serializable;
 @Table(name = "tb_pessoa_perfil")
 public class PessoaPerfil implements Serializable {
 
-
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "co_seq_pessoal_perfil")
     private Long id;
 

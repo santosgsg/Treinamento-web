@@ -30,4 +30,13 @@ public class PessoaDao extends GenericDao<Pessoa, Long> {
 		}
 		return Optional.of(retorno);
 	}
+
+    public Boolean emailRegistrado(String email) {
+		StringBuilder sqlQuery = new StringBuilder();
+		sqlQuery.append("SELECT co_seq_pessoa, no_nome, ds_email, dt_nascimento, st_pessoa ");
+		sqlQuery.append("FROM public.tb_pessoa ");
+		sqlQuery.append("WHERE ds_email = '" + email + "';");
+
+		return !getEntityManager().createNativeQuery(sqlQuery.toString()).getResultList().isEmpty();
+    }
 }

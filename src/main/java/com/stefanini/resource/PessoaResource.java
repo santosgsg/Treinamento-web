@@ -37,7 +37,10 @@ public class PessoaResource {
 		return Response.ok(pessoaServico.salvar(pessoa)).build();
 		}
 		catch(Exception ex){
-			return Response.status(Status.INTERNAL_SERVER_ERROR).entity("Erro Inesperado").build();
+			if(ex.getMessage().equals("Email já está cadastrado"))
+				return Response.status(Status.CONFLICT).entity(ex.getMessage()).build();
+			else
+				return Response.status(Status.INTERNAL_SERVER_ERROR).entity("erro inesperado").build();
 		}
 	}
 
@@ -47,7 +50,10 @@ public class PessoaResource {
 		return Response.ok(pessoaServico.atualizar(pessoa)).build();
 		}
 		catch(Exception ex){
-			return Response.status(Status.INTERNAL_SERVER_ERROR).entity("Erro Inesperado").build();
+			if(ex.getMessage().equals("Email já está cadastrado"))
+				return Response.status(Status.CONFLICT).entity(ex.getMessage()).build();
+			else
+				return Response.status(Status.INTERNAL_SERVER_ERROR).entity("erro inesperado").build();
 		}
 	}
 

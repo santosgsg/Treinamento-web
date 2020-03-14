@@ -40,6 +40,7 @@ public class PessoaServico implements Serializable {
 	 */
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public Pessoa salvar(@Valid Pessoa pessoa) throws Exception {
+		this.validarEmail(pessoa);
 		return dao.salvar(pessoa);
 	}
 
@@ -48,7 +49,8 @@ public class PessoaServico implements Serializable {
 	 */
 //	@Override
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public Pessoa atualizar(@Valid Pessoa pessoa) {
+	public Pessoa atualizar(@Valid Pessoa pessoa) throws Exception {
+		this.validarEmail(pessoa);
 		return dao.atualizar(pessoa);
 	}
 
@@ -82,4 +84,8 @@ public class PessoaServico implements Serializable {
 		return dao.obterListaPessoaPorUf(uf);
 	}
 
+	private void validarEmail(Pessoa pessoa) throws Exception {
+		if (dao.emailRegistrado(pessoa.getEmail()))
+			throw new Exception("Email já está cadastrado");
+	}
 }

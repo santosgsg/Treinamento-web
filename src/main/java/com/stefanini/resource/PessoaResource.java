@@ -1,5 +1,6 @@
 package com.stefanini.resource;
 
+import javax.ejb.EJBException;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -36,11 +37,14 @@ public class PessoaResource {
 		try{
 		return Response.ok(pessoaServico.salvar(pessoa)).build();
 		}
-		catch(Exception ex){
-			if(ex.getMessage().equals("Email já está cadastrado"))
-				return Response.status(Status.CONFLICT).entity(ex.getMessage()).build();
+		catch (EJBException ex){
+			if(ex.getMessage().contains("SecurityException"))
+				return Response.status(Status.CONFLICT).entity("Email usado já está cadastrado").build();
 			else
-				return Response.status(Status.INTERNAL_SERVER_ERROR).entity("erro inesperado").build();
+				return Response.status(Status.INTERNAL_SERVER_ERROR).entity("Erro Inesperado").build();
+		}
+		catch(Exception ex){
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity("Erro Inesperado").build();
 		}
 	}
 
@@ -49,12 +53,15 @@ public class PessoaResource {
 		try {
 		return Response.ok(pessoaServico.atualizar(pessoa)).build();
 		}
-		catch(Exception ex){
-			if(ex.getMessage().equals("Email já está cadastrado"))
-				return Response.status(Status.CONFLICT).entity(ex.getMessage()).build();
-			else
-				return Response.status(Status.INTERNAL_SERVER_ERROR).entity("erro inesperado").build();
-		}
+        catch (EJBException ex){
+            if(ex.getMessage().contains("SecurityException"))
+                return Response.status(Status.CONFLICT).entity("Email usado já está cadastrado").build();
+            else
+                return Response.status(Status.INTERNAL_SERVER_ERROR).entity("Erro Inesperado").build();
+        }
+        catch(Exception ex){
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity("Erro Inesperado").build();
+        }
 	}
 
     @DELETE
@@ -90,7 +97,7 @@ public class PessoaResource {
 			return Response.ok(result.get()).build();
 		}
 		catch (Exception ex){
-			return Response.status(Status.INTERNAL_SERVER_ERROR).entity(ex.getMessage()).build();
+			return Response.status(Status.INTERNAL_SERVER_ERROR).entity("Erro Inesperado").build();
 		}
 	}
 

@@ -21,32 +21,41 @@ public class PessoaPerfilServico implements Serializable {
     @Inject
     private PessoaPerfilDao dao;
 
-
-//    @Override
+    /**
+     * Salvar a associação entre pessoa e perfil
+     */
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public PessoaPerfil salvar(@Valid PessoaPerfil entity) {
         return dao.salvar(entity);
     }
 
-//    @Override
+    /**
+     * Atualizar a associação entre pessoa e perfil
+     */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public PessoaPerfil atualizar(@Valid PessoaPerfil entity) {
         return dao.atualizar(entity);
     }
 
-//    @Override
+    /**
+     * Remover a associação entre pessoa e perfil pelo id
+     */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public String remover(Long id) {
         dao.remover(id);
         return "Removido com sucesso!";
     }
 
-//    @Override
+    /**
+     * Buscar as associações entre pessoa e perfil cadastradas na tabela
+     */
     public Optional<List<PessoaPerfil>> getList() {
         return Optional.empty();
     }
 
-//    @Override
+    /**
+     * Buscar a associação entre pessoa e perfil pelo Id
+     */
     public Optional<PessoaPerfil> encontrar(Long id) {
         return dao.encontrar(id);
     }

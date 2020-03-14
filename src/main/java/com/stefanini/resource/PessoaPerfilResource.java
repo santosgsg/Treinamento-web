@@ -26,16 +26,27 @@ public class PessoaPerfilResource {
 
     @POST
     public Response salvarPerfil(@Valid PessoaPerfil perfil) throws Exception {
+        try {
         return Response.ok(pessoaPerfilServico.salvar(perfil)).build();
+        }
+        catch(Exception ex){
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Erro Inesperado").build();
+        }
     }
 
 
     @GET
     @Path("{id}")
-    public Response obterPerfil(@PathParam("id") Long id) {
-        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("deu ruim").build();
-//		return Response.ok(pessoaServico.encontrar(id).get()).build();
+    public Response obterPessoaPerfil(@PathParam("id") Long id) {
+        try {
+        return Response.ok(pessoaPerfilServico.encontrar(id).get()).build();
+        }
+        catch(Exception ex){
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Erro Inesperado").build();
+        }
     }
+//		return Response.ok(pessoaServico.encontrar(id).get()).build();
+
 
     @DELETE
     public Response removerPessoaPerfil(PessoaPerfil pessoaPerfil) {

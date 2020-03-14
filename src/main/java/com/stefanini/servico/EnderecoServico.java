@@ -29,32 +29,41 @@ public class EnderecoServico implements Serializable {
 	@Inject
 	private EnderecoDao dao;
 
-
-//	@Override
+	/**
+	 * Salvar os dados de um Endereço
+	 */
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public Endereco salvar(@Valid Endereco entity) throws Exception {
 		return dao.salvar(entity);
 	}
 
-//	@Override
+	/**
+	 * Atualizar os dados de um Endereço
+	 */
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Endereco atualizar(@Valid Endereco entity) {
 		return dao.atualizar(entity);
 	}
 
-//	@Override
+	/**
+	 * Remover um Endereço pelo id
+	 */
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public String remover(Long id) {
 	dao.remover(id);
 		return "Removido com sucesso!";
 	}
 
-//	@Override
+	/**
+	 * Buscar uma lista de Endereço
+	 */
 	public Optional<List<Endereco>> getList() {
 		return dao.getList();
 	}
 
-//	@Override
+	/**
+	 * Buscar um Endereço pelo id
+	 */
 	public Optional<Endereco> encontrar(Long id) {
 		return dao.encontrar(id);
 	}

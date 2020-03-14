@@ -37,7 +37,6 @@ public class PerfilServico implements Serializable {
     /**
      * Atualizar o dados de um Perfil
      */
-//	@Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public Perfil atualizar(@Valid Perfil perfil) {
         perfil.setDataHoraAlteracao(LocalDateTime.now());
@@ -50,7 +49,6 @@ public class PerfilServico implements Serializable {
     /**
      * Remover um Perfil pelo id
      */
-//	@Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public String remover(@Valid Long id) {
         dao.remover(id);
@@ -60,7 +58,6 @@ public class PerfilServico implements Serializable {
     /**
      * Buscar uma lista de Perfil
      */
-//	@Override
     public Optional<List<Perfil>> getList() {
         return dao.getList();
     }
@@ -68,7 +65,6 @@ public class PerfilServico implements Serializable {
     /**
      * Buscar um Perfil pelo ID
      */
-//	@Override
     public Optional<Perfil> encontrar(Long id) {
         return dao.encontrar(id);
     }

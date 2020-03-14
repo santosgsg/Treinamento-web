@@ -47,7 +47,6 @@ public class PessoaServico implements Serializable {
 	/**
 	 * Atualizar o dados de uma pessoa
 	 */
-//	@Override
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Pessoa atualizar(@Valid Pessoa pessoa) throws Exception {
 		this.validarEmail(pessoa);
@@ -57,7 +56,6 @@ public class PessoaServico implements Serializable {
 	/**
 	 * Remover uma pessoa pelo id
 	 */
-//	@Override
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public String remover(@Valid Long id) {
 		dao.remover(id);
@@ -67,7 +65,6 @@ public class PessoaServico implements Serializable {
 	/**
 	 * Buscar uma lista de Pessoa
 	 */
-//	@Override
 	public Optional<List<Pessoa>> getList() {
 		return dao.getList();
 	}
@@ -75,17 +72,22 @@ public class PessoaServico implements Serializable {
 	/**
 	 * Buscar uma Pessoa pelo ID
 	 */
-//	@Override
 	public Optional<Pessoa> encontrar(Long id) {
 		return dao.encontrar(id);
 	}
 
+	/**
+	 * Buscar uma Pessoa pela Uf
+	 */
 	public Optional<List<Pessoa>> obterListaPessoaPorUf(String uf) {
 		return dao.obterListaPessoaPorUf(uf);
 	}
 
+	/**
+	 * Valida o email
+	 */
 	private void validarEmail(Pessoa pessoa) throws Exception {
 		if (dao.emailRegistrado(pessoa.getEmail()))
-			throw new Exception("Email já está cadastrado");
+			throw new SecurityException();
 	}
 }

@@ -20,29 +20,54 @@ public class EnderecoResource {
 
     @GET
     public Response obterListaEndereco() {
+        try{
         return Response.ok(enderecoServico.getList().get()).build();
+        }
+        catch(Exception ex){
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Erro Inesperado").build();
+        }
     }
 
     @POST
     public Response salvarEndereco(@Valid Endereco endereco) throws Exception {
+        try{
         return Response.ok(enderecoServico.salvar(endereco)).build();
+        }
+        catch(Exception ex){
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Erro Inesperado").build();
+        }
     }
 
     @PUT
     public Response atualizarEndereco(@Valid Endereco endereco) throws Exception {
+        try{
         return Response.ok(enderecoServico.atualizar(endereco)).build();
+        }
+        catch(Exception ex){
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Erro Inesperado").build();
+        }
     }
 
     @DELETE
     public Response deleteEndereco(@Valid Endereco endereco) throws Exception {
+        try{
         return Response.ok(enderecoServico.remover(endereco.getId())).build();
+        }
+        catch(Exception ex){
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Erro Inesperado").build();
+        }
     }
 
 
     @GET
     @Path("{id}")
     public Response obterEndereco(@PathParam("id") Long id) {
-        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("deu ruim").build();
+        try {
+        return Response.ok(enderecoServico.encontrar(id).get()).build();
+        }
+        catch(Exception ex){
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Erro Inesperado").build();
+        }
 //		return Response.ok(enderecoServico.encontrar(id).get()).build();
     }
 }

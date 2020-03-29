@@ -65,9 +65,10 @@ public class PessoaResource {
 	}
 
     @DELETE
-    public Response removerPessoa(Pessoa pessoa) {
+    @Path("{id}")
+    public Response removerPessoa(@PathParam("id") Long id) {
 		try {
-        return Response.ok(pessoaServico.remover(pessoa.getId())).build();
+        return Response.ok(pessoaServico.remover(id)).build();
 		}
 		catch(Exception ex){
 			return Response.status(Status.INTERNAL_SERVER_ERROR).entity("Erro Inesperado").build();

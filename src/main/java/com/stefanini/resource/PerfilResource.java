@@ -50,9 +50,10 @@ public class PerfilResource {
     }
 
     @DELETE
-    public Response removerPerfil(Perfil perfil) {
+    @Path("{id}")
+    public Response removerPerfil(@PathParam("id") Long id) {
         try {
-            return Response.ok(perfilServico.remover(perfil.getId())).build();
+            return Response.ok(perfilServico.remover(id)).build();
         }
         catch(Exception ex){
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Erro Inesperado").build();

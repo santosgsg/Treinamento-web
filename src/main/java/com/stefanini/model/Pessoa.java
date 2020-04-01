@@ -2,6 +2,7 @@ package com.stefanini.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -30,12 +31,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
  */
 @Entity
 @Table(name = "TB_PESSOA")
-@NamedQueries(value = {
-		@NamedQuery(name = "Pessoa.findByNome",
-				query = "select p from Pessoa p where p.nome=:nome"),
-		@NamedQuery(name = "Pessoa.findPerfilsAndEnderecosByNome",
-				query = "select  p from Pessoa p  JOIN FETCH p.perfils JOIN FETCH p.enderecos  where p.nome=:nome")
-})
 public class Pessoa implements Serializable{
 
 	
@@ -82,7 +77,7 @@ public class Pessoa implements Serializable{
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name = "CO_SEQ_PESSOA",referencedColumnName = "CO_SEQ_PESSOA")
-	private Set<Endereco> enderecos;
+	private Set<Endereco> enderecos = new HashSet<>();
 
 	/**
 	 * Mapeamento de Perfis Unidirecional
@@ -94,7 +89,7 @@ public class Pessoa implements Serializable{
 			joinColumns = {@JoinColumn(name = "CO_SEQ_PESSOA")},
 			inverseJoinColumns = {@JoinColumn(name = "CO_SEQ_PERFIL")}
 	)
-	private Set<Perfil> perfils;
+	private Set<Perfil> perfils = new HashSet<>();
 	/**
 	 * Metodo construtor da classe
 	 */
@@ -117,12 +112,20 @@ public class Pessoa implements Serializable{
 	 * @param dataNascimento
 	 * @param situacao
 	 */
-	public Pessoa(@NotNull String nome, @NotNull String email, @NotNull LocalDate dataNascimento,@NotNull Boolean situacao) {
+	public Pessoa(
+			@NotNull String nome,
+			@NotNull String email,
+			@NotNull LocalDate dataNascimento,
+			@NotNull Boolean situacao,
+			@NotNull Set<Perfil> perfils,
+			Set<Endereco> enderecos) {
 		super();
 		this.nome = nome;
 		this.email = email;
 		this.dataNascimento = dataNascimento;
 		this.situacao = situacao;
+		this.setPerfils(perfils);
+		this.setEnderecos(enderecos);
 	}
 
 

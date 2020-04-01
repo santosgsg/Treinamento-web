@@ -1,6 +1,7 @@
 package com.stefanini.servico;
 
 import com.stefanini.dao.PessoaDao;
+import com.stefanini.dto.PessoaDto;
 import com.stefanini.model.Pessoa;
 import com.stefanini.util.IGenericService;
 
@@ -39,18 +40,22 @@ public class PessoaServico implements Serializable {
 	 * Salvar os dados de uma Pessoa
 	 */
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-	public Pessoa salvar(@Valid Pessoa pessoa) throws Exception {
+	public Pessoa salvar(@Valid PessoaDto pessoa) throws Exception {
 		this.validarEmail(pessoa);
-		return dao.salvar(pessoa);
+		Pessoa entity = new Pessoa(pessoa.getNome(), pessoa.getEmail(), pessoa.getDataNascimento(),
+				pessoa.getSituacao(), pessoa.getPerfils(), pessoa.getEnderecos());
+		return dao.salvar(entity);
 	}
 
 	/**
 	 * Atualizar o dados de uma pessoa
 	 */
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public Pessoa atualizar(@Valid Pessoa pessoa) throws Exception {
+	public Pessoa atualizar(@Valid PessoaDto pessoa) throws Exception {
 		this.validarEmail(pessoa);
-		return dao.atualizar(pessoa);
+		Pessoa entity = new Pessoa(pessoa.getNome(), pessoa.getEmail(), pessoa.getDataNascimento(),
+				pessoa.getSituacao(), pessoa.getPerfils(), pessoa.getEnderecos());
+		return dao.atualizar(entity);
 	}
 
 	/**
@@ -86,7 +91,7 @@ public class PessoaServico implements Serializable {
 	/**
 	 * Valida o email
 	 */
-	private void validarEmail(Pessoa pessoa) throws Exception {
+	private void validarEmail(PessoaDto pessoa) throws Exception {
 		if (dao.emailRegistrado(pessoa.getEmail()))
 			throw new SecurityException();
 	}

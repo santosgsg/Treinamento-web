@@ -7,6 +7,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import com.stefanini.dto.PessoaDto;
 import com.stefanini.model.Pessoa;
 import com.stefanini.servico.PessoaServico;
 
@@ -33,12 +34,12 @@ public class PessoaResource {
 	}
 
 	@POST
-	public Response salvarPessoa(Pessoa pessoa) {
+	public Response salvarPessoa(PessoaDto pessoa) {
 		try{
 		return Response.ok(pessoaServico.salvar(pessoa)).build();
 		}
 		catch (EJBException ex){
-			if(ex.getMessage().contains("SecurityException"))
+				if(ex.getMessage().contains("SecurityException"))
 				return Response.status(Status.CONFLICT).entity("Email usado já está cadastrado").build();
 			else
 				return Response.status(Status.INTERNAL_SERVER_ERROR).entity("Erro Inesperado").build();
@@ -49,7 +50,7 @@ public class PessoaResource {
 	}
 
 	@PUT
-	public Response atualizarPessoa(Pessoa pessoa) {
+	public Response atualizarPessoa(PessoaDto pessoa) {
 		try {
 		return Response.ok(pessoaServico.atualizar(pessoa)).build();
 		}

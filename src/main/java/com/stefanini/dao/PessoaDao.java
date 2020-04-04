@@ -19,6 +19,12 @@ public class PessoaDao extends GenericDao<Pessoa, Long> {
 	public PessoaDao() {
 		super(Pessoa.class);
 	}
+
+	public Pessoa buscarPessoaComEnderecoEPerfil(Long id) {
+		return getEntityManager().createNamedQuery("Pessoa.buscarPessoaComEnderecoEPerfil", Pessoa.class)
+				.setParameter("pessoaID", id).getSingleResult();
+	}
+
 	public Optional<List<Pessoa>> obterListaPessoaPorUf(String uf){
 		StringBuilder sqlQuery = new StringBuilder();
 		sqlQuery.append("SELECT p.co_seq_pessoa, p.no_nome, p.ds_email, p.dt_nascimento, p.st_pessoa ");

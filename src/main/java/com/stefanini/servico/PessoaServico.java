@@ -13,11 +13,9 @@ import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.validation.Valid;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.Serializable;
+import java.io.*;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
@@ -79,6 +77,24 @@ public class PessoaServico implements Serializable {
 		 return imagePath;
 	}
 
+	public Imagem obterImagem(String imagePath) {
+		Imagem imagem = new Imagem();
+		try {
+			File file =  new File(imagePath);
+			FileInputStream fileInputStreamReader = new FileInputStream(file);
+			byte[] bytes = new byte[(int)file.length()];
+			fileInputStreamReader.read(bytes);
+
+			imagem.setBase64(new String(Base64.getEncoder().encode(bytes)));
+			imagem.setNome(file.getName());
+
+		}catch (IOException ex) {
+			ex.printStackTrace();
+		}
+
+		return imagem ;
+	}
+
 	private String createPathKey(String email) {
 		return email
 				.replace("@", "_")
@@ -118,8 +134,31 @@ public class PessoaServico implements Serializable {
 	/**
 	 * Buscar uma Pessoa pelo ID
 	 */
-	public Optional<Pessoa> encontrar(Long id) {
-		return dao.encontrar(id);
+	public Optional<PessoaDto> encontrar(Long id) {
+		PessoaDto pessoaDto = new PessoaDto();
+		Pessoa pessoa = new Pessoa();
+		try {
+			pessoa = dao.buscarPessoaComEnderecoEPerfil(id);
+		}catch (Exception ex){
+			ex.printStackTrace();
+		}
+
+		pessoaDto.setId(pessoa.getId());
+		pessoaDto.setNome(pessoa.getNome());
+		pessoaDto.setEmail(pessoa.getEmail());
+		pessoaDto.setDataNascimento(pessoa.getDataNascimento());
+		pessoaDto.setSituacao(pessoa.getSituacao());
+
+		if(pessoa.getImagem() != null)
+			pessoaDto.setImagem(this.obterImagem(pessoa.getImagem()));
+
+		if(pessoa.getPerfils() != null)
+			pessoaDto.setPerfils(pessoa.getPerfils());
+
+		if(pessoa.getEnderecos() != null)
+			pessoaDto.setEnderecos(pessoa.getEnderecos());
+
+		return Optional.of(pessoaDto);
 	}
 
 	/**

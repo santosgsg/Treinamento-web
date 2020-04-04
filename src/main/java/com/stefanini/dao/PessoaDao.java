@@ -1,7 +1,9 @@
 package com.stefanini.dao;
 
 import com.stefanini.dao.abstracao.GenericDao;
+import com.stefanini.dto.PessoaDto;
 import com.stefanini.model.Pessoa;
+import com.stefanini.model.PessoaPerfil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,4 +41,35 @@ public class PessoaDao extends GenericDao<Pessoa, Long> {
 
 		return !getEntityManager().createNativeQuery(sqlQuery.toString()).getResultList().isEmpty();
     }
+
+    public Pessoa salvar(PessoaDto pessoaDto, String imagePath) {
+		Pessoa pessoa = new Pessoa(
+				pessoaDto.getNome(),
+				pessoaDto.getEmail(),
+				pessoaDto.getDataNascimento(),
+				pessoaDto.getSituacao(),
+				imagePath);
+
+		this.getEntityManager().persist(pessoa);
+
+		if(pessoaDto.getEnderecos() != null) {
+			pessoaDto.getEnderecos().forEach(x -> {
+				x.setIdPessoa(pessoa.getId());
+				try {
+					this.getEntityManager().persist(x);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			});
+		}
+
+		if(pessoaDto.getPerfils() != null) {
+			pessoaDto.getPerfils().forEach(x -> {
+				this.getEntityManager().persist(new PessoaPerfil(x, pessoa));
+			});
+		}
+
+		return pessoa;
+	}
+
 }

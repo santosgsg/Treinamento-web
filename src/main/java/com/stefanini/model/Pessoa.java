@@ -31,6 +31,8 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
  */
 @Entity
 @Table(name = "TB_PESSOA")
+@NamedQuery(name = "Pessoa.findPerfilsAndEnderecosByNome", query =
+		"SELECT p FROM Pessoa p LEFT JOIN FETCH p.enderecos LEFT JOIN FETCH p.perfils ORDER BY p.nome")
 public class Pessoa implements Serializable{
 
 	
@@ -71,24 +73,23 @@ public class Pessoa implements Serializable{
 	@Column(name = "ST_PESSOA")
 	private Boolean situacao;
 
+	@NotNull
+	@Column(name = "DS_CAMINHO_IMAGEM")
+	private String imagem;
+
 	/**
 	 * Mapeamento de Enderecos Unidirecional
 	 */
-	@JsonIgnore
-	@OneToMany(fetch = FetchType.LAZY)
-	@JoinColumn(name = "CO_SEQ_PESSOA",referencedColumnName = "CO_SEQ_PESSOA")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "CO_SEQ_PESSOA", referencedColumnName = "CO_SEQ_PESSOA")
 	private Set<Endereco> enderecos = new HashSet<>();
 
 	/**
 	 * Mapeamento de Perfis Unidirecional
 	 */
-	@JsonIgnore
-	@ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinTable(
-			name = "TB_PESSOA_PERFIL",
-			joinColumns = {@JoinColumn(name = "CO_SEQ_PESSOA")},
-			inverseJoinColumns = {@JoinColumn(name = "CO_SEQ_PERFIL")}
-	)
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinTable(name = "TB_PESSOA_PERFIL", joinColumns = { @JoinColumn(name = "CO_SEQ_PESSOA") }, inverseJoinColumns = {
+			@JoinColumn(name = "CO_SEQ_PERFIL") })
 	private Set<Perfil> perfils = new HashSet<>();
 	/**
 	 * Metodo construtor da classe
@@ -117,15 +118,13 @@ public class Pessoa implements Serializable{
 			@NotNull String email,
 			@NotNull LocalDate dataNascimento,
 			@NotNull Boolean situacao,
-			@NotNull Set<Perfil> perfils,
-			Set<Endereco> enderecos) {
+			String imagem) {
 		super();
 		this.nome = nome;
 		this.email = email;
 		this.dataNascimento = dataNascimento;
 		this.situacao = situacao;
-		this.setPerfils(perfils);
-		this.setEnderecos(enderecos);
+		this.imagem = imagem;
 	}
 
 
@@ -162,7 +161,13 @@ public class Pessoa implements Serializable{
 		this.dataNascimento = dataNascimento;
 	}
 
-	
+	public String getImagem() {
+		return imagem;
+	}
+
+	public void setImagem(String imagem) {
+		this.imagem = imagem;
+	}
 
 	public String getEmail() {
 		return email;

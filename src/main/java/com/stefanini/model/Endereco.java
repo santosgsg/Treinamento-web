@@ -49,6 +49,14 @@ public class Endereco implements Serializable {
 //    @JoinColumn(name = "co_seq_pessoa", referencedColumnName = "co_seq_pessoa", nullable = false)
 //    private Pessoa pessoa;
 
+    public Endereco(String bairro, String cep, String uf,  String complemento, String localidade, String logradouro) {
+        this.bairro = bairro;
+        this.cep = cep;
+        this.uf = uf;
+        this.complemento = complemento;
+        this.localidade = localidade;
+        this.logradouro = logradouro;
+    }
 
     public Endereco() {
     }

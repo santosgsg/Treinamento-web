@@ -2,6 +2,7 @@ package com.stefanini.resource;
 
 import javax.ejb.EJBException;
 import javax.inject.Inject;
+import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -34,9 +35,9 @@ public class PessoaResource {
 	}
 
 	@POST
-	public Response salvarPessoa(PessoaDto pessoa) {
+	public Response salvarPessoa(PessoaDto pessoaDto) {
 		try{
-		return Response.ok(pessoaServico.salvar(pessoa)).build();
+		return Response.ok(pessoaServico.salvar(pessoaDto)).build();
 		}
 		catch (EJBException ex){
 				if(ex.getMessage().contains("SecurityException"))

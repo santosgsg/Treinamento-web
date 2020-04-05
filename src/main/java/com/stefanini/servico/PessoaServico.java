@@ -16,6 +16,7 @@ import javax.validation.Valid;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.lang.reflect.Array;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
@@ -46,13 +47,17 @@ public class PessoaServico implements Serializable {
 	public Pessoa salvar(@Valid PessoaDto pessoaDto) throws Exception {
 		this.validarEmail(pessoaDto);
 		String imagePath = this.salvarImagem(pessoaDto.getImagem(), pessoaDto.getEmail());	
-		
+
 		return dao.salvar(pessoaDto, imagePath);
 	}
 
 	private String salvarImagem(Imagem imagem, String email) throws IOException {
-		if(imagem == null)
+		if(imagem != null) {
+			if (imagem.getBase64().isEmpty())
+				return null;
+		} else {
 			return null;
+		}
 		String uniqueKey = this.createPathKey(email);
 
 		String imagePath = "C:\\ImagemServidor\\" + uniqueKey +"\\";
@@ -105,14 +110,22 @@ public class PessoaServico implements Serializable {
 	 * Atualizar o dados de uma pessoa
 	 */
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public Pessoa atualizar(@Valid PessoaDto pessoa) throws Exception {
+	public Pessoa atualizar(@Valid PessoaDto pessoaDto) throws Exception {
 
-		this.validarEmail(pessoa);
-		String imagePath = this.salvarImagem(pessoa.getImagem(), pessoa.getEmail());
+		this.validarEmail(pessoaDto);
+		String imagePath = this.salvarImagem(pessoaDto.getImagem(), pessoaDto.getEmail());
 
-		Pessoa entity = new Pessoa(pessoa.getNome(), pessoa.getEmail(), pessoa.getDataNascimento(),
-				pessoa.getSituacao(), imagePath);
-		return dao.atualizar(entity);
+		Pessoa pessoa = new Pessoa(
+				pessoaDto.getNome(),
+				pessoaDto.getEmail(),
+				pessoaDto.getDataNascimento(),
+				pessoaDto.getSituacao(),
+				imagePath);
+		pessoa.setId(pessoaDto.getId());
+		pessoa.setPerfils(pessoaDto.getPerfils());
+		pessoa.setEnderecos(pessoaDto.getEnderecos());
+
+		return dao.atualizar(pessoa);
 	}
 
 	/**
@@ -172,7 +185,11 @@ public class PessoaServico implements Serializable {
 	 * Valida o email
 	 */
 	private void validarEmail(PessoaDto pessoa) throws Exception {
-		if (dao.emailRegistrado(pessoa.getEmail()))
-			throw new SecurityException();
+		List<Object> result = dao.emailRegistrado(pessoa.getEmail());
+		if (!result.isEmpty()) {
+			if (pessoa.getId() != Long.decode(Array.get(result.get(0), 0).toString())) {
+				throw new SecurityException();
+			}
+		}
 	}
 }

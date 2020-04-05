@@ -5,6 +5,7 @@ import com.stefanini.dto.PessoaDto;
 import com.stefanini.model.Pessoa;
 import com.stefanini.model.PessoaPerfil;
 
+import javax.transaction.TransactionScoped;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -39,14 +40,15 @@ public class PessoaDao extends GenericDao<Pessoa, Long> {
 		return Optional.of(retorno);
 	}
 
-    public Boolean emailRegistrado(String email) {
+    public List<Object> emailRegistrado(String email) {
 		StringBuilder sqlQuery = new StringBuilder();
 		sqlQuery.append("SELECT co_seq_pessoa, no_nome, ds_email, dt_nascimento, st_pessoa ");
 		sqlQuery.append("FROM public.tb_pessoa ");
 		sqlQuery.append("WHERE ds_email = '" + email + "';");
 
-		return !getEntityManager().createNativeQuery(sqlQuery.toString()).getResultList().isEmpty();
+		return getEntityManager().createNativeQuery(sqlQuery.toString()).getResultList();
     }
+
 
     public Pessoa salvar(PessoaDto pessoaDto, String imagePath) {
 		Pessoa pessoa = new Pessoa(

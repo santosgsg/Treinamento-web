@@ -74,7 +74,6 @@ public class Pessoa implements Serializable{
 	@Column(name = "ST_PESSOA")
 	private Boolean situacao;
 
-	@NotNull
 	@Column(name = "DS_CAMINHO_IMAGEM")
 	private String imagem;
 

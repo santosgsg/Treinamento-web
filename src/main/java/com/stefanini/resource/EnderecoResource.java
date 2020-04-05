@@ -52,9 +52,10 @@ public class EnderecoResource {
     }
 
     @DELETE
-    public Response deleteEndereco(@Valid Endereco endereco) throws Exception {
+    @Path("{id}")
+    public Response deleteEndereco(@PathParam("id") Long id) throws Exception {
         try{
-        return Response.ok(enderecoServico.remover(endereco.getId())).build();
+        return Response.ok(enderecoServico.remover(id)).build();
         }
         catch(Exception ex){
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Erro Inesperado").build();
